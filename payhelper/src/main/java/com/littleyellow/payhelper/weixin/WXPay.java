@@ -1,6 +1,6 @@
 package com.littleyellow.payhelper.weixin;
 
-import android.app.Activity;
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.tencent.mm.opensdk.constants.Build;
@@ -16,7 +16,7 @@ import static com.littleyellow.payhelper.Pay.payInfo;
 
 public class WXPay {
 
-    private Activity activity;
+    private Context context;
 
     public static WXPayListener WXPayListener;
 
@@ -39,6 +39,7 @@ public class WXPay {
     IWXAPI mWXApi;
 
     private WXPay(Builder builder) {
+        context = builder.context;
         sign = builder.sign;
         appId = builder.appId;
         partnerId = builder.partnerId;
@@ -54,7 +55,7 @@ public class WXPay {
     }
 
     public boolean toPay(){
-        mWXApi = WXAPIFactory.createWXAPI(activity, null);
+        mWXApi = WXAPIFactory.createWXAPI(context, null);
         mWXApi.registerApp(this.appId);
 
         if (!check()) {
@@ -84,6 +85,7 @@ public class WXPay {
 
 
     public static final class Builder {
+        private Context context;
         private String sign;
         private String appId;
         private String partnerId;
@@ -94,6 +96,11 @@ public class WXPay {
         private WXPayListener mWXPayListener;
 
         private Builder() {
+        }
+
+        public Builder context(Context context) {
+            this.context = context;
+            return this;
         }
 
         public Builder sign(String sign) {
