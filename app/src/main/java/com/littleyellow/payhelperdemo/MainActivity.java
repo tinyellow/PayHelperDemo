@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 .build()
                 .toPay();
         AliPay.newBuilder()
+                .activity(this)
                 .name("")
                 .detail("")
                 .money("")

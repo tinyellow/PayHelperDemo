@@ -77,6 +77,7 @@ public class AliPay {
     };
 
     private AliPay(Builder builder) {
+        activity = builder.activity;
         isRsa2 = builder.isRsa2;
         orderNo = builder.orderNo;
         money = builder.money;
@@ -137,6 +138,7 @@ public class AliPay {
 
 
     public static final class Builder {
+        private Activity activity;
         private PayIntercept payIntercept;
         private boolean isRsa2;
         private String privateKey;
@@ -150,6 +152,11 @@ public class AliPay {
         private AliPayListener aliPayListener;
 
         private Builder() {
+        }
+
+        public Builder activity(Activity activity) {
+            this.activity = activity;
+            return this;
         }
 
         public Builder setPayIntercept(PayIntercept payIntercept) {
