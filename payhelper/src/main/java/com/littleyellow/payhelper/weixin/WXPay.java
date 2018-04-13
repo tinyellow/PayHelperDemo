@@ -18,7 +18,7 @@ public class WXPay {
 
     private Activity activity;
 
-    public static PayListener payListener;
+    public static WXPayListener WXPayListener;
 
     //微信支付AppID
     private String appId;
@@ -46,7 +46,7 @@ public class WXPay {
         packageValue = builder.packageValue;
         nonceStr = builder.nonceStr;
         timeStamp = builder.timeStamp;
-        payListener = builder.mPayListener;
+        WXPayListener = builder.mWXPayListener;
     }
 
     public static Builder newBuilder() {
@@ -58,9 +58,9 @@ public class WXPay {
         mWXApi.registerApp(this.appId);
 
         if (!check()) {
-            if (payListener != null) {
-                payListener.onPayFailure(-1,"未安装微信或微信版本过低");
-                payListener = null;
+            if (WXPayListener != null) {
+                WXPayListener.onPayFailure(-1,"未安装微信或微信版本过低");
+                WXPayListener = null;
             }
             return false;
         }
@@ -91,7 +91,7 @@ public class WXPay {
         private String packageValue;
         private String nonceStr;
         private String timeStamp;
-        private PayListener mPayListener;
+        private WXPayListener mWXPayListener;
 
         private Builder() {
         }
@@ -131,8 +131,8 @@ public class WXPay {
             return this;
         }
 
-        public Builder setOnPayListener(PayListener mPayListener) {
-            this.mPayListener = mPayListener;
+        public Builder setOnPayListener(WXPayListener mWXPayListener) {
+            this.mWXPayListener = mWXPayListener;
             return this;
         }
 

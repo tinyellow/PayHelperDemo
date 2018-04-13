@@ -46,15 +46,15 @@ public class CopyPayActivity extends Activity implements IWXAPIEventHandler {
 //      -2	用户取消	无需处理。发生场景：用户不支付了，点击取消，返回APP。
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             try {
-                if(null!=WXPay.payListener){
+                if(null!=WXPay.WXPayListener){
                     if (resp.errCode == BaseResp.ErrCode.ERR_OK) {
-                        WXPay.payListener.onPaySuccess();
+                        WXPay.WXPayListener.onPaySuccess();
                     } else if(resp.errCode == BaseResp.ErrCode.ERR_USER_CANCEL){
-                        WXPay.payListener.onPayCancel();
+                        WXPay.WXPayListener.onPayCancel();
                     }else{
-                        WXPay.payListener.onPayFailure(resp.errCode,resp.errStr);
+                        WXPay.WXPayListener.onPayFailure(resp.errCode,resp.errStr);
                     }
-                    WXPay.payListener = null;//防止内存泄漏
+                    WXPay.WXPayListener = null;//防止内存泄漏
                 }
             } catch (Exception e) {
                 e.printStackTrace();

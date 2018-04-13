@@ -43,7 +43,7 @@ public class AliPay {
 
     private String notifyUrl;
 
-    private PayListener payListener;
+    private AliPayListener aliPayListener;
 
     private PayIntercept payIntercept;
 
@@ -52,7 +52,7 @@ public class AliPay {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case SDK_PAY_FLAG:
-                    if(null == payListener){
+                    if(null == aliPayListener){
                         return;
                     }
                     PayResult payResult = new PayResult((Map<String, String>) msg.obj);
@@ -64,10 +64,10 @@ public class AliPay {
                     // 判断resultStatus 为9000则代表支付成功
                     if (TextUtils.equals(resultStatus, "9000")) {
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
-                        payListener.onPaySuccess();
+                        aliPayListener.onPaySuccess();
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
-                        payListener.onPayFailure(resultStatus,resultInfo);
+                        aliPayListener.onPayFailure(resultStatus,resultInfo);
                     }
                     break;
                 default:
@@ -83,7 +83,7 @@ public class AliPay {
         name = builder.name;
         detail = builder.detail;
         payIntercept = builder.payIntercept;
-        payListener = builder.payListener;
+        aliPayListener = builder.aliPayListener;
 
         partner = TextUtils.isEmpty(builder.partner)? payInfo.getAliPartner():builder.partner;
         sellerId = TextUtils.isEmpty(builder.sellerId)?payInfo.getAliSellerId():builder.sellerId;
@@ -147,7 +147,7 @@ public class AliPay {
         private String name;
         private String detail;
         private String notifyUrl;
-        private PayListener payListener;
+        private AliPayListener aliPayListener;
 
         private Builder() {
         }
@@ -202,8 +202,8 @@ public class AliPay {
             return this;
         }
 
-        public Builder setOnPayListener(PayListener payListener) {
-            this.payListener = payListener;
+        public Builder setOnPayListener(AliPayListener aliPayListener) {
+            this.aliPayListener = aliPayListener;
             return this;
         }
 

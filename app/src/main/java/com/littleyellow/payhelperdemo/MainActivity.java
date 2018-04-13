@@ -4,7 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.littleyellow.payhelper.alipay.AliPay;
-import com.littleyellow.payhelper.weixin.PayListener;
+import com.littleyellow.payhelper.alipay.AliPayListener;
+import com.littleyellow.payhelper.weixin.WXPayListener;
 import com.littleyellow.payhelper.weixin.WXPay;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
                 .nonceStr("")
                 .prepayId("")
                 .sign(null)
-                .setOnPayListener(new PayListener() {
+                .setOnPayListener(new WXPayListener() {
                     @Override
                     public void onPaySuccess() {
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //                    }
 //                })
-                .setOnPayListener(new com.littleyellow.payhelper.alipay.PayListener() {
+                .setOnPayListener(new AliPayListener() {
                     @Override
                     public void onPaySuccess() {
 
