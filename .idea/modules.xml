@@ -3,8 +3,13 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PayHelperDemo.iml" filepath="$PROJECT_DIR$/PayHelperDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PayHelperDemo.iml" filepath="$PROJECT_DIR$/PayHelperDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/payhelper/payhelper.iml" filepath="$PROJECT_DIR$/payhelper/payhelper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/payhelper/payhelper.iml" filepath="$PROJECT_DIR$/payhelper/payhelper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/payhelper-annotation/payhelper-annotation.iml" filepath="$PROJECT_DIR$/payhelper-annotation/payhelper-annotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/payhelper-compiler/payhelper-compiler.iml" filepath="$PROJECT_DIR$/payhelper-compiler/payhelper-compiler.iml" />
     </modules>
   </component>
 </project>

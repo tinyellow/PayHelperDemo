@@ -16,7 +16,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
  * Created by 小黄 on 2018/4/12.
  */
 
-public class CopyPayActivity extends Activity implements IWXAPIEventHandler {
+public class PayCallbackActivity extends Activity implements IWXAPIEventHandler {
 
     private IWXAPI api;
 

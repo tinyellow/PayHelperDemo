@@ -10,6 +10,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/payhelper" />
+            <option value="$PROJECT_DIR$/payhelper-annotation" />
+            <option value="$PROJECT_DIR$/payhelper-compiler" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -1,1 +1,1 @@
-include ':app', ':payhelper'
+include ':app', ':payhelper', ':payhelper-compiler', ':payhelper-annotation'
