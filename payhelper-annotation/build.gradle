@@ -6,3 +6,22 @@ dependencies {
 
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"
+
+//apply plugin: 'com.novoda.bintray-release'
+//publish{
+//    repoName = 'payhelper-annotation'//远程仓库名字,不指明，默认是上传到maven
+//    userOrg = 'littleyellow'//bintray.com的用户名
+//    groupId = 'com.littleyellow'//一个唯一值，默认包名,生成的gradle依赖前缀
+//    artifactId = 'payhelper-annotation'//远程仓库包名称
+//    publishVersion = '1.0.0'//版本号
+//    desc = '简单封装微信、支付宝支付'//描述，不重要
+//    website = 'https://github.com/cunmin/PayHelperDemo'//引用github主页
+//}
+//
+//tasks.withType(Javadoc) {//防止编码问题
+//    options.addStringOption('Xdoclint:none', '-quiet')
+//    options.addStringOption('encoding', 'UTF-8')
+//    options.addStringOption('charSet', 'UTF-8')
+//}
+
+apply from : "bintrayUpload.gradle"

@@ -1,7 +1,7 @@
-package com.payhelper.compiler;
+package com.littleyellow.pay.compiler;
 
 import com.google.auto.service.AutoService;
-import com.pay.annotation.APPLICATION_ID;
+import com.littleyellow.pay.annotation.APPLICATION_ID;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;

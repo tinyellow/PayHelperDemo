@@ -149,7 +149,7 @@ public class OrderInfoUtil2_0 {
 		if (isEncode) {
 			try {
 				sb.append(URLEncoder.encode(value, "UTF-8"));
-			} catch (UnsupportedEncodingException e) {
+			} catch (Exception e) {
 				sb.append(value);
 			}
 		} else {
@@ -188,7 +188,7 @@ public class OrderInfoUtil2_0 {
 
 		try {
 			encodedSign = URLEncoder.encode(oriSign, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "sign=" + encodedSign;

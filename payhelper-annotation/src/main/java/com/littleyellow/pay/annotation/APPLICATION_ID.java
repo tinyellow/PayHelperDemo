@@ -1,4 +1,4 @@
-package com.pay.annotation;
+package com.littleyellow.pay.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

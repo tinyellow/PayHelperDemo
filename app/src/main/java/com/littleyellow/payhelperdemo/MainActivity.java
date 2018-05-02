@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.littleyellow.payhelper.weixin.WXPay;
 import com.littleyellow.payhelper.weixin.WXPayListener;
-import com.pay.annotation.APPLICATION_ID;
+import com.littleyellow.pay.annotation.APPLICATION_ID;
 
 @APPLICATION_ID(BuildConfig.APPLICATION_ID)
 public class MainActivity extends AppCompatActivity {
