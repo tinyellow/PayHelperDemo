@@ -3,7 +3,9 @@ package com.littleyellow.pay.compiler;
 import com.google.auto.service.AutoService;
 import com.littleyellow.pay.annotation.APPLICATION_ID;
 import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
 import java.util.HashSet;
@@ -21,6 +23,8 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
+
+import static com.squareup.javapoet.MethodSpec.methodBuilder;
 
 @AutoService(Processor.class)
 public class PayCallbackProcessor extends AbstractProcessor {
@@ -53,25 +57,43 @@ public class PayCallbackProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
         try {
-        mMessager.printMessage(Diagnostic.Kind.NOTE, "processing...");
-        String applicationId = null;
-        Set<? extends Element> elements = roundEnvironment.getElementsAnnotatedWith(APPLICATION_ID.class);
-        if (elements != null && elements.size() > 0){
+            mMessager.printMessage(Diagnostic.Kind.NOTE, "processing...");
+            Set<? extends Element> elements = roundEnvironment.getElementsAnnotatedWith(APPLICATION_ID.class);
+            if(null==elements||elements.isEmpty()){
+                return false;
+            }
             Element element = elements.iterator().next();
-            applicationId = element.getAnnotation(APPLICATION_ID.class).value();
+            String applicationId = element.getAnnotation(APPLICATION_ID.class).value();
             mMessager.printMessage(Diagnostic.Kind.NOTE, "applicationId = "+applicationId);
-        }
-        if (applicationId == null || applicationId.length() == 0) return false;
-        TypeElement payCallbackActivity = mElementUtils.getTypeElement("com.littleyellow.payhelper.weixin.PayCallbackActivity");
 
-        TypeSpec payEntryActivity = TypeSpec.classBuilder("WXPayEntryActivity")
-                .addModifiers(Modifier.PUBLIC)
-                .superclass(ClassName.get(payCallbackActivity))
-                .build();
-
+            TypeElement payCallbackActivity = mElementUtils.getTypeElement("com.littleyellow.payhelper.weixin.PayCallbackActivity");
+            TypeSpec payEntryActivity = TypeSpec.classBuilder("WXPayEntryActivity")
+                    .addModifiers(Modifier.PUBLIC)
+                    .superclass(ClassName.get(payCallbackActivity))
+                    .build();
             JavaFile javaFile = JavaFile.builder(applicationId+".wxapi", payEntryActivity)
                     .build();
             javaFile.writeTo(processingEnvironment.getFiler());
+
+            TypeElement variableElement = (TypeElement) element;
+            ClassName globalClass = ClassName.get(variableElement);
+            FieldSpec payInfo = FieldSpec.builder(globalClass, "payInfo")
+                    .addModifiers(Modifier.PRIVATE, Modifier.STATIC,Modifier.FINAL)
+                    .initializer("new $T()",globalClass)
+                    .build();
+            MethodSpec getSpec = methodBuilder("get")
+                    .addModifiers(Modifier.PUBLIC,Modifier.STATIC)
+                    .addStatement("return $L","payInfo")
+                    .returns(globalClass)
+                    .build();
+            TypeSpec globalInfoProvider = TypeSpec.classBuilder("GlobalInfoProvider")
+                    .addModifiers(Modifier.PUBLIC)
+                    .addField(payInfo)
+                    .addMethod(getSpec)
+                    .build();
+            JavaFile javaFile2 = JavaFile.builder("com.littleyellow.payhelper", globalInfoProvider)
+                    .build();
+            javaFile2.writeTo(processingEnvironment.getFiler());
         } catch (Exception e) {
             e.printStackTrace();
             mMessager.printMessage(Diagnostic.Kind.ERROR, "Exception="+e.getMessage());

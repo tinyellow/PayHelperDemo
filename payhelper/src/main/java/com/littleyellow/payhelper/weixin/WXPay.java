@@ -3,12 +3,13 @@ package com.littleyellow.payhelper.weixin;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.littleyellow.payhelper.Pay;
 import com.tencent.mm.opensdk.constants.Build;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-import static com.littleyellow.payhelper.Pay.payInfo;
+import static android.text.TextUtils.isEmpty;
 
 /**
  * Created by 小黄 on 2018/4/12.
@@ -41,13 +42,13 @@ public class WXPay {
     private WXPay(Builder builder) {
         context = builder.context;
         sign = builder.sign;
-        appId = builder.appId;
-        partnerId = builder.partnerId;
         prepayId = builder.prepayId;
-        packageValue = builder.packageValue;
         nonceStr = builder.nonceStr;
         timeStamp = builder.timeStamp;
         WXPayListener = builder.mWXPayListener;
+        appId = TextUtils.isEmpty(builder.appId)? Pay.getPayInfo().getWXAppId():builder.appId;
+        partnerId = isEmpty(builder.partnerId)?Pay.getPayInfo().getWXPartnerId():builder.partnerId;
+        packageValue = isEmpty(builder.packageValue)? "Sign=WXPay":builder.packageValue;
     }
 
     public static Builder newBuilder() {
@@ -67,9 +68,9 @@ public class WXPay {
         }
 
         PayReq request = new PayReq();
-        request.appId = TextUtils.isEmpty(this.appId)?payInfo.getWXAppId():this.appId;
-        request.partnerId = TextUtils.isEmpty(this.partnerId)?payInfo.getWXPartnerId():this.partnerId;
-        request.packageValue = TextUtils.isEmpty(this.packageValue)? "Sign=WXPay":this.packageValue;
+        request.appId = appId;
+        request.partnerId = partnerId;
+        request.packageValue = packageValue;
         request.prepayId = this.prepayId;
         request.nonceStr = this.nonceStr;
         request.timeStamp = this.timeStamp;

@@ -6,8 +6,8 @@ package com.littleyellow.payhelper.alipay;
 
 public interface AliPayListener {
 
-    void onPaySuccess();
+    void onPaySuccess(String status, String info);
 
-    void onPayFailure(String resultStatus, String resultInfo);
+    void onPayFailure(String status, String info);
 
 }

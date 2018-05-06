@@ -3,7 +3,6 @@ package com.littleyellow.payhelper.alipay.util;
 
 import com.littleyellow.payhelper.alipay.SignUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,49 +62,38 @@ public class OrderInfoUtil2_0 {
 
 	/**
 	 * 构造支付订单参数列表
-	 * @param partner
-	 * @param sellerId
+	 * @param appId
 	 * @param outTradeNo
 	 * @param subject
 	 * @param body
 	 * @param totalFee
 	 * @param notifyUrl
+	 * @param timestamp 发送请求的时间，格式"yyyy-MM-dd HH:mm:ss" 2014-07-24 03:07:50
      * @param rsa2
      * @return
      */
-	public static Map<String, String> buildOrderParamMap(String partner, String sellerId,
-														 String outTradeNo,String subject,
-														 String body,String totalFee,
-														 String notifyUrl) {
+	public static Map<String, String> buildOrderParamMap(String appId,String outTradeNo,
+														 String subject,String body,
+														 String totalFee,String notifyUrl,
+														 String timestamp,boolean rsa2) {
 		Map<String, String> keyValues = new HashMap<String, String>();
 
-		keyValues.put("partner", partner);
+		keyValues.put("app_id", appId);
 
-		keyValues.put("seller_id", sellerId);
+		String format = "{\"timeout_express\":\"30m\",\"product_code\":\"QUICK_MSECURITY_PAY\",\"total_amount\":\"%s\",\"subject\":\"%s\",\"body\":\"%s\",\"out_trade_no\":\"%s\"}";
+		keyValues.put("biz_content",String.format(format,totalFee,subject,body,outTradeNo));
 
-		keyValues.put("out_trade_no", outTradeNo);
+		keyValues.put("charset", "utf-8");
 
-		keyValues.put("subject", subject);
-
-		keyValues.put("body", body);
-
-		keyValues.put("total_fee", totalFee);
+		keyValues.put("method", "alipay.trade.app.pay");
 
 		keyValues.put("notify_url", notifyUrl);
 
-		keyValues.put("service", "mobile.securitypay.pay");
+		keyValues.put("sign_type", rsa2 ? "RSA2" : "RSA");
 
-		keyValues.put("payment_type", "1");
+		keyValues.put("timestamp", timestamp);
 
-		keyValues.put("_input_charset", "utf-8");
-
-		// 设置未付款交易的超时时间
-		// 默认30分钟，一旦超时，该笔交易就会自动被关闭。
-		// 取值范围：1m～15d。
-		// m-分钟，h-小时，d-天，1c-当天（无论交易何时创建，都在0点关闭）。
-		// 该参数数值不接受小数点，如1.5h，可转换为90m。
-		keyValues.put("it_b_pay", "30m");
-		
+		keyValues.put("version", "1.0");
 		return keyValues;
 	}
 	

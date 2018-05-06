@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
-        applicationId "com.littleyellow.payhelperdemo2"
+        applicationId "com.littleyellow.payhelperdemo"
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
@@ -28,5 +28,4 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':payhelper')
     annotationProcessor project(':payhelper-compiler')
-//    compile 'com.littleyellow:app-update:1.0.2'
 }

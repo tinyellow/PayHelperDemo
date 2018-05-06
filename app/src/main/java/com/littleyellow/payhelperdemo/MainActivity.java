@@ -2,18 +2,21 @@ package com.littleyellow.payhelperdemo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
+import com.littleyellow.payhelper.Pay;
 import com.littleyellow.payhelper.weixin.WXPay;
 import com.littleyellow.payhelper.weixin.WXPayListener;
-import com.littleyellow.pay.annotation.APPLICATION_ID;
 
-@APPLICATION_ID(BuildConfig.APPLICATION_ID)
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TextView text = (TextView) findViewById(R.id.text);
+        text.setText(Pay.getPayInfo().getAliNotifyUrl());
         WXPay.newBuilder()
                 .context(this)
                 .appId("")
@@ -45,25 +48,25 @@ public class MainActivity extends AppCompatActivity {
 //                .money("")
 //                .orderNo("")
 //                .notifyUrl("")
-////                .setPayIntercept(new PayIntercept() {
-////                    @Override
-////                    public void onBuildParam(Map<String, String> params) {
-////
-////                    }
-////
-////                    @Override
-////                    public void onPayResult(Map<String, String> result) {
-////
-////                    }
-////                })
-//                .setOnPayListener(new AliPayListener() {
+//                .setPayIntercept(new PayIntercept() {
 //                    @Override
-//                    public void onPaySuccess() {
+//                    public void onBuildParam(Map<String, String> params) {
 //
 //                    }
 //
 //                    @Override
-//                    public void onPayFailure(String resultStatus, String resultInfo) {
+//                    public void onPayResult(Map<String, String> result) {
+//
+//                    }
+//                })
+//                .setOnPayListener(new AliPayListener() {
+//                    @Override
+//                    public void onPaySuccess(String status, String info) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onPayFailure(String status, String info) {
 //
 //                    }
 //                })

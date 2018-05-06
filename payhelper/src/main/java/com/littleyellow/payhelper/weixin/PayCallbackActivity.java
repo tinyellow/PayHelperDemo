@@ -23,7 +23,7 @@ public class PayCallbackActivity extends Activity implements IWXAPIEventHandler 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        api = WXAPIFactory.createWXAPI(this, Pay.payInfo.getWXAppId());
+        api = WXAPIFactory.createWXAPI(this, Pay.getPayInfo().getWXAppId());
         api.handleIntent(getIntent(), this);
     }
 

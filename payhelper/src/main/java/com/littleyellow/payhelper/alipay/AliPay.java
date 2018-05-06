@@ -7,11 +7,11 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.alipay.sdk.app.PayTask;
+import com.littleyellow.payhelper.GlobalPayInfo;
+import com.littleyellow.payhelper.Pay;
 import com.littleyellow.payhelper.alipay.util.OrderInfoUtil2_0;
 
 import java.util.Map;
-
-import static com.littleyellow.payhelper.Pay.payInfo;
 
 
 /**
@@ -28,9 +28,7 @@ public class AliPay {
 
     private String privateKey;
 
-    private String partner;
-
-    private String sellerId;
+    private String appId;
 
     //
     private String orderNo;
@@ -40,6 +38,8 @@ public class AliPay {
     private String name;
 
     private String detail;
+
+    private String timestamp;
 
     private String notifyUrl;
 
@@ -64,7 +64,7 @@ public class AliPay {
                     // 判断resultStatus 为9000则代表支付成功
                     if (TextUtils.equals(resultStatus, "9000")) {
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
-                        aliPayListener.onPaySuccess();
+                        aliPayListener.onPaySuccess(resultStatus,resultInfo);
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                         aliPayListener.onPayFailure(resultStatus,resultInfo);
@@ -83,11 +83,12 @@ public class AliPay {
         money = builder.money;
         name = builder.name;
         detail = builder.detail;
+        timestamp = builder.timestamp;
         payIntercept = builder.payIntercept;
         aliPayListener = builder.aliPayListener;
 
-        partner = TextUtils.isEmpty(builder.partner)? payInfo.getAliPartner():builder.partner;
-        sellerId = TextUtils.isEmpty(builder.sellerId)?payInfo.getAliSellerId():builder.sellerId;
+        GlobalPayInfo payInfo = Pay.getPayInfo();
+        appId = TextUtils.isEmpty(builder.appId)?payInfo.getAliAppId():builder.appId;
         privateKey = TextUtils.isEmpty(builder.privateKey)?payInfo.getAliPrivateKey():builder.privateKey;
         notifyUrl = TextUtils.isEmpty(builder.notifyUrl)?payInfo.getAliNotifyUrl():builder.notifyUrl;
     }
@@ -108,9 +109,11 @@ public class AliPay {
 
             @Override
             public void run() {
-
-                Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(partner,
-                        sellerId,orderNo,name,detail,money,notifyUrl);
+                Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(
+                        appId,orderNo,
+                        name,detail,
+                        money,notifyUrl,
+                        timestamp,isRsa2);
                 if(null!=payIntercept){
                     payIntercept.onBuildParam(params);
                 }
@@ -142,8 +145,8 @@ public class AliPay {
         private PayIntercept payIntercept;
         private boolean isRsa2;
         private String privateKey;
-        private String partner;
-        private String sellerId;
+        private String timestamp;
+        private String appId;
         private String orderNo;
         private String money;
         private String name;
@@ -174,13 +177,13 @@ public class AliPay {
             return this;
         }
 
-        public Builder partner(String partner) {
-            this.partner = partner;
+        public Builder timestamp(String timestamp) {
+            this.timestamp = timestamp;
             return this;
         }
 
-        public Builder sellerId(String sellerId) {
-            this.sellerId = sellerId;
+        public Builder appId(String appId) {
+            this.appId = appId;
             return this;
         }
 

@@ -28,12 +28,13 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
-    compile project(':payhelper-annotation')
+//    compile project(':payhelper-annotation')
+    compile 'com.littleyellow:payhelper-annotation:1.0.0'
 }
 
 //apply plugin: 'com.novoda.bintray-release'
 //publish{
-//    repoName = 'payhelper'//远程仓库名字,不指明，默认是上传到maven
+//    repoName = 'maven'//远程仓库名字,不指明，默认是上传到maven
 //    userOrg = 'littleyellow'//bintray.com的用户名
 //    groupId = 'com.littleyellow'//一个唯一值，默认包名,生成的gradle依赖前缀
 //    artifactId = 'payhelper'//远程仓库包名称

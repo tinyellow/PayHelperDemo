@@ -13,14 +13,12 @@ public interface GlobalPayInfo {
     String getWXPartnerId();
 
     //微信支付商户号key
-    String getWXAppKey();
+//    String getWXAppKey();
 
     //支付宝
     String getAliPrivateKey();
 
-    String getAliPartner();
-
-    String getAliSellerId();
+    String getAliAppId();
 
     String getAliNotifyUrl();
 
