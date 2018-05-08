@@ -45,20 +45,7 @@ public class PayCallbackActivity extends Activity implements IWXAPIEventHandler 
 //      -1	错误	可能的原因：签名错误、未注册APPID、项目设置APPID不正确、注册的APPID与设置的不匹配、其他异常等。
 //      -2	用户取消	无需处理。发生场景：用户不支付了，点击取消，返回APP。
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-            try {
-                if(null!=WXPay.WXPayListener){
-                    if (resp.errCode == BaseResp.ErrCode.ERR_OK) {
-                        WXPay.WXPayListener.onPaySuccess();
-                    } else if(resp.errCode == BaseResp.ErrCode.ERR_USER_CANCEL){
-                        WXPay.WXPayListener.onPayCancel();
-                    }else{
-                        WXPay.WXPayListener.onPayFailure(resp.errCode,resp.errStr);
-                    }
-                    WXPay.WXPayListener = null;//防止内存泄漏
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Pay.getPayInfo().onResp(this,resp);
             finish();
         }
     }

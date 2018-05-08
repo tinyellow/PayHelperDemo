@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 
 public class Pay {
 
-    private static GlobalPayInfo payInfo;
+    protected static GlobalPayInfo payInfo;
 
     public static IWXAPI mWXApi;
 
@@ -29,7 +29,11 @@ public class Pay {
                 Method method = providerClass.getMethod("get");
                 payInfo = (GlobalPayInfo) method.invoke(providerClass);
             } catch (Exception e) {
-                throw new IllegalArgumentException("GlobalPayInfo is null");
+                throw new IllegalArgumentException("GlobalPayInfo is null,Create a class to extends GlobalPayInfo and annotate it.example:" +
+                        "\n@APPLICATION_ID(BuildConfig.APPLICATION_ID)" +
+                        "\npublic class PayInfoProvider extends GlobalPayInfo{" +
+                        "\n..."+
+                        "\n}");
             }
         }
         return payInfo;
