@@ -43,6 +43,8 @@ public class AliPay {
 
     private String notifyUrl;
 
+    private String serviceSign;
+
     private AliPayListener aliPayListener;
 
     private PayIntercept payIntercept;
@@ -82,6 +84,7 @@ public class AliPay {
         orderNo = builder.orderNo;
         money = builder.money;
         name = builder.name;
+        serviceSign = builder.serviceSign;
         detail = builder.detail;
         timestamp = builder.timestamp;
         payIntercept = builder.payIntercept;
@@ -109,21 +112,26 @@ public class AliPay {
 
             @Override
             public void run() {
-                Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(
-                        appId,orderNo,
-                        name,detail,
-                        money,notifyUrl,
-                        timestamp,isRsa2);
-                if(null!=payIntercept){
-                    payIntercept.onBuildParam(params);
+                String orderSign;
+                if(!TextUtils.isEmpty(serviceSign)){
+                    orderSign = serviceSign;
+                }else{
+                    Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(
+                            appId,orderNo,
+                            name,detail,
+                            money,notifyUrl,
+                            timestamp,isRsa2);
+                    if(null!=payIntercept){
+                        payIntercept.onBuildParam(params);
+                    }
+
+                    String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
+                    String sign = OrderInfoUtil2_0.getSign(params, privateKey, isRsa2);
+                    orderSign = orderParam + "&" + sign;
                 }
 
-                String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
-                String sign = OrderInfoUtil2_0.getSign(params, privateKey, isRsa2);
-                final String orderInfo = orderParam + "&" + sign;
-
                 PayTask alipay = new PayTask(activity);
-                Map<String, String> result = alipay.payV2(orderInfo, true);
+                Map<String, String> result = alipay.payV2(orderSign, true);
                 if(null!=payIntercept){
                     payIntercept.onPayResult(result);
                 }
@@ -152,6 +160,7 @@ public class AliPay {
         private String name;
         private String detail;
         private String notifyUrl;
+        private String serviceSign;
         private AliPayListener aliPayListener;
 
         private Builder() {
@@ -209,6 +218,11 @@ public class AliPay {
 
         public Builder notifyUrl(String notifyUrl) {
             this.notifyUrl = notifyUrl;
+            return this;
+        }
+
+        public Builder serviceSign(String serviceSign) {
+            this.serviceSign = serviceSign;
             return this;
         }
 
