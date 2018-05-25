@@ -18,6 +18,7 @@ public class Pay {
     public static IWXAPI mWXApi;
 
     public static void registerApp(Context context) {
+        getPayInfo();
         mWXApi = WXAPIFactory.createWXAPI(context, null);
         mWXApi.registerApp(payInfo.getWXAppId());
     }
@@ -31,7 +32,7 @@ public class Pay {
             } catch (Exception e) {
                 throw new IllegalArgumentException("GlobalPayInfo is null,Create a class to extends GlobalPayInfo and annotate it.example:" +
                         "\n@APPLICATION_ID(BuildConfig.APPLICATION_ID)" +
-                        "\npublic class PayInfoProvider extends GlobalPayInfo{" +
+                        "\npublic class XXXXXXX extends GlobalPayInfo{" +
                         "\n..."+
                         "\n}");
             }

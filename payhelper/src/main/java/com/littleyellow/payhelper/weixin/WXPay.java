@@ -17,8 +17,6 @@ import static android.text.TextUtils.isEmpty;
 
 public class WXPay {
 
-    private Context context;
-
     public static WXPayListener WXPayListener;
 
     //微信支付AppID
@@ -36,29 +34,33 @@ public class WXPay {
     //签名
     private String sign;
 
+    private PayReqIntercept intercept;
+
     //微信支付核心api
-    IWXAPI mWXApi;
+    private IWXAPI wxapi;
 
     private WXPay(Builder builder) {
-        context = builder.context;
         sign = builder.sign;
         prepayId = builder.prepayId;
         nonceStr = builder.nonceStr;
         timeStamp = builder.timeStamp;
+        intercept = builder.intercept;
         WXPayListener = builder.mWXPayListener;
         appId = TextUtils.isEmpty(builder.appId)? Pay.getPayInfo().getWXAppId():builder.appId;
         partnerId = isEmpty(builder.partnerId)?Pay.getPayInfo().getWXPartnerId():builder.partnerId;
         packageValue = isEmpty(builder.packageValue)? "Sign=WXPay":builder.packageValue;
+        wxapi = builder.wxapi;
     }
 
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    public boolean toPay(){
-        mWXApi = WXAPIFactory.createWXAPI(context, null);
-        mWXApi.registerApp(this.appId);
-
+    public boolean toPay(Context context){
+        if(null == wxapi){
+            wxapi = WXAPIFactory.createWXAPI(context, null);
+            wxapi.registerApp(this.appId);
+        }
         if (!check()) {
             if (WXPayListener != null) {
                 WXPayListener.onPayFailure(-1,"未安装微信或微信版本过低");
@@ -75,18 +77,19 @@ public class WXPay {
         request.nonceStr = this.nonceStr;
         request.timeStamp = this.timeStamp;
         request.sign = this.sign;
-
-        return mWXApi.sendReq(request);
+        if(null != intercept){
+            intercept.onSendReq(request);
+        }
+        return wxapi.sendReq(request);
     }
 
     //检测是否支持微信支付
     private boolean check() {
-        return mWXApi.isWXAppInstalled() && mWXApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
+        return wxapi.isWXAppInstalled() && wxapi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
     }
 
 
     public static final class Builder {
-        private Context context;
         private String sign;
         private String appId;
         private String partnerId;
@@ -94,14 +97,11 @@ public class WXPay {
         private String packageValue;
         private String nonceStr;
         private String timeStamp;
+        private IWXAPI wxapi;
         private WXPayListener mWXPayListener;
+        private PayReqIntercept intercept;
 
         private Builder() {
-        }
-
-        public Builder context(Context context) {
-            this.context = context;
-            return this;
         }
 
         public Builder sign(String sign) {
@@ -138,6 +138,18 @@ public class WXPay {
             this.timeStamp = timeStamp;
             return this;
         }
+
+        public Builder intercept(PayReqIntercept intercept) {
+            this.intercept = intercept;
+            return this;
+        }
+
+        public Builder wxapi(IWXAPI wxapi) {
+            this.wxapi = wxapi;
+            return this;
+        }
+
+
 
         public Builder setOnPayListener(WXPayListener mWXPayListener) {
             this.mWXPayListener = mWXPayListener;
