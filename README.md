@@ -64,58 +64,59 @@ public class PayInfoProvider extends GlobalPayInfo {
 支付宝支付时调用
 ```
 AliPay.newBuilder()
-                    .activity(this)
-                    //.serviceSign(bean.getPrepayid())//如果后台进行签名加密会返回一条签名信息(包括全部支付信息的)，只要设置这个参数其他的支付信息都忽略
-                    //.setPayIntercept()    //有特殊情况要添加自定义支付字段时，可这里拦截设置
-                    .appId()
-                    .privateKey()
-                    .orderNo()
-                    .name()
-                    .money()
-                    .detail()
-                    .notifyUrl()
-                    .timestamp()
-                    .setOnPayListener(new AliPayListener() {
-                        @Override
-                        public void onPaySuccess(String status, String info) {
-                        }
+    .activity(this)
+    //.serviceSign(bean.getPrepayid())//如果后台进行签名加密会返回一条签名信息(包括全部支付信息的)，只要设置这个参数其他的支付信息都忽略
+    //.setPayIntercept()    //有特殊情况要添加自定义支付字段时，可这里拦截设置
+    .appId()
+    .privateKey()
+    .orderNo()
+    .name()
+    .money()
+    .detail()
+    .notifyUrl()
+    .timestamp()
+    .setOnPayListener(new AliPayListener() {
+        @Override
+        public void onPaySuccess(String status, String info) {
+        }
 
-                        @Override
-                        public void onPayFailure(String status, String info) {
-                        }
-                    })
-                    .build()
-                    .toPay();
+        @Override
+        public void onPayFailure(String status, String info) {
+        }
+    })
+    .build()
+    .toPay();
 ```
 
 微信支付时调用
 ```
 WXPay.newBuilder()
-                    .appId(appid)
-                    .partnerId(partnerId)
-                    .prepayId(prepayId)
-                    .nonceStr(nonceStr)
-                    .timeStamp(timeStamp)
-                    .sign(sign)
-                    .setOnPayListener(new WXPayListener() {
-                        @Override
-                        public void onPaySuccess() {
-                        }
+    .appId(appid)
+    .partnerId(partnerId)
+    .prepayId(prepayId)
+    .nonceStr(nonceStr)
+    .timeStamp(timeStamp)
+    .sign(sign)
+    //.intercept() //调试可这里拦截查看上报微信前的参数,可直接修改(不建议)
+    .setOnPayListener(new WXPayListener() {
+        @Override
+        public void onPaySuccess() {
+        }
 
-                        @Override
-                        public void onPayFailure(int errorCode, String errStr) {
-                            if ("未安装微信或微信版本过低".equals(errStr)){
-                                Toast.makeText(RechargeActivity.this,"请先安装微信在进行支付",Toast.LENGTH_SHORT).show();
-                            }
-                        }
+        @Override
+        public void onPayFailure(int errorCode, String errStr) {
+            if ("未安装微信或微信版本过低".equals(errStr)){
+                Toast.makeText(RechargeActivity.this,"请先安装微信在进行支付",Toast.LENGTH_SHORT).show();
+            }
+        }
 
-                        @Override
-                        public void onPayCancel() {
-                        
-                        }
-                    })
-                    .build()
-                    .toPay(this);
+        @Override
+        public void onPayCancel() {
+
+        }
+    })
+    .build()
+    .toPay(this);
 
 ```
 
