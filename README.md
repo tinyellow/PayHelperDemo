@@ -2,7 +2,7 @@
 简单封装微信支付宝支付,统一调用风格和回调方式。
 ## Setup
 
-要使用这个库 `minSdkVersion`  >= 11. 库引用的微信sdk:5.1.6,支付宝sdk:20180403
+要使用这个库 `minSdkVersion`  >= 14. 库引用的微信sdk:5.1.6,支付宝sdk:20180403
 
 ```gradle
 allprojects {
