@@ -1,12 +1,13 @@
 package com.littleyellow.payhelperdemo;
 
+import com.littleyellow.pay.annotation.APPLICATION_ID;
 import com.littleyellow.payhelper.GlobalPayInfo;
 
 /**
  * Created by Administrator on 2018/5/5 0005.
  */
 
-//@APPLICATION_ID(BuildConfig.APPLICATION_ID)
+@APPLICATION_ID(BuildConfig.APPLICATION_ID)
 public class PayInfoProvider extends GlobalPayInfo {
 
     @Override

@@ -15,3 +15,14 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-dontwarn android.net.**
+-keep class android.net.SSLCertificateSocketFactory{*;}
+#跳过它们不被混淆
+
+-dontwarn com.alipay.**
+
+#保持他们的类不被混淆
+-keep class com.alipay.** { *;}
+
+-keep public class com.littleyellow.payhelper.GlobalInfoProvider{ * ; }

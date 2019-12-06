@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
         TextView text = (TextView) findViewById(R.id.text);
         text.setText(Pay.getPayInfo().getAliNotifyUrl());
         WXPay.newBuilder()
-                .context(this)
                 .appId("")
                 .nonceStr("")
                 .prepayId("")
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build()
-                .toPay();
+                .toPay(this);
 //        AliPay.newBuilder()
 //                .activity(this)
 //                .name("")
