@@ -120,6 +120,11 @@ WXPay.newBuilder()
 
 ```
 
+如果项目加混淆，添加下面一行规则（支付宝微信到各自开发文档上查看并添加）
+```
+-keep public class com.littleyellow.payhelper.GlobalInfoProvider{ * ; }
+```
+
 # License
 
 ```
